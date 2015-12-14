@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>MyFirstApp</display-name>
+  <welcome-file-list>
+    <!-- <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file> -->
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+   <servlet>
+      <servlet-name>spring</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+
+   <!--*********Important commenets so please read ************************** -->
+   
+	<!-- With the web.xml configured they way you have in the question, in particular:
+	
+	<servlet-mapping>
+	    <servlet-name>dispatcherServlet</servlet-name>
+	    <url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	ALL requests being made to your web app will be directed to the
+	 DispatcherServlet. This includes requests like /tasklist/, /tasklist/some-thing.html, /tasklist/WEB-INF/views/index.jsp.
+	
+	Because of this, when your controller returns a view that points to a .jsp,
+	 instead of allowing your server container to service the request, 
+	 the DispatcherServlet jumps in and starts looking for a controller 
+	 that can service this request, it doesn't find any and hence the 404.
+	
+	The simplest way to solve is to have your servlet url mapping as follows:
+	
+	<servlet-mapping>
+	    <servlet-name>dispatcherServlet</servlet-name>
+	    <url-pattern>/</url-pattern>
+	</servlet-mapping>
+	Notice the missing *. This tells the container that any request that does 
+	not have a path info in it (urls without a .xxx at the end), should be 
+	sent to the DispatcherServlet. With this configuration, when a xxx.jsp 
+	request is received, the DispatcherServlet s not consulted, and 
+	your servlet container's default servlet will service the 
+	request and present the jsp as expected. -->
+
+
+   <servlet-mapping>
+      <servlet-name>spring</servlet-name>
+      <url-pattern>/</url-pattern>
+   </servlet-mapping>
+   
+    <!--*********Important commenets so please read ************************** -->
+   
+  <!--********* customize path of spring bean xml when is not exists in WEB-INF *********** -->
+   <context-param>
+	   <param-name>contextConfigLocation</param-name>
+	   <param-value>/WEB-INF/spring-servlet.xml</param-value>
+   </context-param>
+   <!--********* customize path of spring bean xml when is not same as project name *********** -->
+   
+	<listener>
+	   <listener-class>
+	      org.springframework.web.context.ContextLoaderListener
+	   </listener-class>
+	</listener>
+
+</web-app>
